@@ -1,0 +1,136 @@
+<div ng-controller="myctrl">
+    <form action="" ng-submit="onSubmitForm($event)" class="col-8 offset-2">
+        <div class="form-group mt-3">
+            <label for="">Tài khoản:</label>
+            <input class="form-control" type="text" ng-model="student.username">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Mật khẩu:</label>
+            <input class="form-control" type="password" ng-model="student.password">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Họ tên:</label>
+            <input class="form-control" type="text" ng-model="student.fullname">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Số điện thoại</label>
+            <input class="form-control" type="text" ng-model="student.phonenumber">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Email</label>
+            <input class="form-control" ng-model="student.email">
+        </div>
+        <div class="form-group mt-3">
+            <label for="">Ngày sinh:</label>
+            <input class="form-control" type="text" ng-model="student.birthday">
+        </div>
+        <div class="form-group mt-3">
+            <button class="btn btn-primary">Lưu</button>
+            <button type="button" ng-click="clear()" class="btn btn-success">Mới</button>
+            <div class="modal fade text-dark" id="modal-delete-confirm-1" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Xác nhận xóa sinh viên
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn muốn xóa bản ghi này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" ng-click="onDelete(st.id)" class="btn btn-danger">Xóa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" ng-click="update()">Sửa</button>
+        </div>
+    </form>
+    <div class="col-8 offset-2">
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tài khoản</th>
+                    <th>Mật khẩu</th>
+                    <th>Họ tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Ngày sinh</th>
+                    <th colspan="2">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="st in students">
+                    <td> {{st.id}} </td>
+                    <td>{{ st.username }}</td>
+                    <td>{{ st.password }}</td>
+                    <td>{{ st.fullname }}</td>
+                    <td>{{ st.phonenumber }}</td>
+                    <td>{{ st.email }}</td>
+                    <td>{{ st.birthday }}</td>
+                    <td>
+                        <button class="btn btn-primary" ng-click="cellclick(st.id)">chọn</button>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-confirm-1">Xóa</button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script src="js/angularjs.min.js">
+</script>
+<script>
+    var app = angular.module("demo_http", []);
+    app.controller("myctrl", function ($scope, $http) {
+        const api = 'https://62160eca7428a1d2a3598b21.mockapi.io/Students';
+
+        $http.get(api)
+            .then(function (response) {
+                $scope.students = response.data;
+            })
+
+        $scope.onSubmitForm = function (event) {
+            event.preventDefault();
+
+            $http.post(api, $scope.student)
+                .then(function (response) {
+                    console.log(response);
+                })
+        }
+
+        $scope.update = function () {
+            $http.put(api + '/' + $scope.id, $scope.student)
+                .then(function (response) {
+                    console.log(response);
+                })
+        }
+        $scope.cellclick = function (id) {
+            $scope.id = id;
+            for (var i = 0; i < $scope.students.length; i++) {
+                if ($scope.students[i].id == $scope.id) {
+                    $scope.student = angular.copy($scope.students[i]);
+                }
+            }
+        }
+        $scope.onDelete = function () {
+            $http.delete(api + '/' + $scope.id)
+                .then(function (response) {
+                    console.log(response);
+                })
+        }
+        $scope.clear = function () {
+            $scope.student = {};
+        }
+    });
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/Angularjs.min.js"></script>
+<script src="js/angular-route.js"></script>

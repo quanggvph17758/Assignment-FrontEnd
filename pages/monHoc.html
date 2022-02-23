@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-header">
+        Môn Học
+    </div>
+    <div class="card-body">
+        <div class="row" ng-controller="monHoc_Ctrl">
+            <div class="card col-6 ms-3 mt-3" style="width: 18rem;" ng-repeat="sub in subjects">
+                <img src="images/logos/{{ sub.Logo }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> {{ sub.Id }} </h5>
+                    <p class="card-text"> {{ sub.Name }} </p>
+                    <a href="#trangThi" class="btn btn-primary"> Làm Bài </a>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+</div>
